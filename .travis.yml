@@ -1,0 +1,17 @@
+language: node_js
+jobs:
+  include:
+    - stage: Test
+      script: npm test
+    - stage: Lint
+      script: npm run lint
+stages:
+    - Test
+    - Lint
+node_js:
+  - "8.10"
+cache:
+  directories:
+    - "node_modules"
+install:
+  - npm install

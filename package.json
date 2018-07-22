@@ -1,0 +1,38 @@
+{
+  "name": "batend-helpers-inputpath-parser",
+  "version": "1.0.0",
+  "description": "A simple UUID InputPath parser",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint ./",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node",
+    "parsing",
+    "inputPath",
+    "parser",
+    "UUID",
+    "regex"
+  ],
+  "author": "Thomas Léger",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser/issues"
+  },
+  "homepage": "https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^5.2.0",
+    "mocha": "^5.2.0",
+    "xregexp": "^4.2.0"
+  }
+}
