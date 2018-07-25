@@ -30,9 +30,11 @@
   },
   "homepage": "https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser#readme",
   "dependencies": {
+    "xregexp": "^4.2.0"
+  },
+  "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^5.2.0",
-    "mocha": "^5.2.0",
-    "xregexp": "^4.2.0"
+    "mocha": "^5.2.0"
   }
 }
