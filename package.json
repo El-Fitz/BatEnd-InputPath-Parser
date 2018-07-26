@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser.git"
+    "url": "git+https://github.com/Parsifal-SAS/BatEnd-Helpers-InputPath-Parser.git"
   },
   "keywords": [
     "nodejs",
@@ -27,9 +27,9 @@
   "author": "Thomas Léger",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser/issues"
+    "url": "https://github.com/Parsifal-SAS/BatEnd-Helpers-InputPath-Parser/issues"
   },
-  "homepage": "https://github.com/El-Fitz/BatEnd-Helpers-InputPath-Parser#readme",
+  "homepage": "https://github.com/Parsifal-SAS/BatEnd-Helpers-InputPath-Parser#readme",
   "dependencies": {
     "xregexp": "^4.2.0"
   },
