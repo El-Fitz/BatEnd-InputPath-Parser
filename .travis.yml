@@ -34,6 +34,6 @@ deploy:
       - "index.js"
     on: 
       branch: master
-      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parsere 
+      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser 
       tags: true 
 
