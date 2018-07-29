@@ -3,11 +3,11 @@ const inputPathRegex = /((([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A
 const uuidV4Regex = /(([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))/gi;
 
 exports.listRequiredInputs = (inputPath) => {
-	return inputPathToArray(inputPath).checkIfValidInputPathParserArray().map((value) => XRegExp.match(value, inputPathRegex, "all")).flatDeep().checkIfValidInputPathParserArray().unique();
+	return listUniqueInputPathItemsMatchingRegex(inputPath, inputPathRegex);
 };
 
 exports.listRequiredInputStepsIds = (inputPath) => {
-	return inputPathToArray(inputPath).checkIfValidInputPathParserArray().map((value) => XRegExp.match(value, uuidV4Regex, "all")).flatDeep().checkIfValidInputPathParserArray().unique();
+	return listUniqueInputPathItemsMatchingRegex(inputPath, uuidV4Regex);
 };
 
 exports.parsedInputPath = (inputPath) => {
@@ -22,10 +22,13 @@ exports.parsedInputPath = (inputPath) => {
 		});
 		return result;
 	} else {
-		console.log("Type of inputPath: ", typeof inputPath);
-		throw new Error("Input Path must be an Object, an Array or a String");
+		throw new Error("Input Path must be an Object, an Array or a String. Is ", typeof inputPath);
 	}
 };
+
+function listUniqueInputPathItemsMatchingRegex(inputPath, regex) {
+	return inputPathToArray(inputPath).checkIfValidInputPathParserArray().map((value) => XRegExp.match(value, regex, "all")).flatDeep().checkIfValidInputPathParserArray().unique();
+}
 
 //TODO: Properly parse the string Input Path instead of listing it's required inputs
 function parseStringInputPath(stringInputPath) {
@@ -60,8 +63,7 @@ function inputPathToArray(inputPath) {
 	} else if (typeof inputPath === "object") {
 		return toArray(inputPath);
 	} else {
-		console.log("Type of inputPath: ", typeof inputPath);
-		throw new Error("Input Path must be an Object, an Array or a String");
+		throw new Error("Input Path must be an Object, an Array or a String. Is ", typeof inputPath);
 	}
 }
 
