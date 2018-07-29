@@ -17,11 +17,23 @@ install:
 - npm install
 after_success: npm run coverage
 deploy:
-  provider: releases
-  api_key:
-    secure: HinyJ3XoZOGlVYsqcshYYIFKgbzDslE7EWWe7RoCBwWbQ9N2ZJNe529ZtLckBiLrDk4xL1q/4gOwep1J3VgoAbEDjE13NpMon4vwwct4SmB2bGSJzBiQBWaHVLzNm6eBQAshg2dmtdprysGXoRczF06ls9cSH1L1VXqv93Dj007umGd6QfzGQQK5EVvHRI5Hv6+hBGL5fMhxgkHXF3BXt+lGwsvQStlFW589qqsGRumpD2tdJKc9aqsoMujicYvFvHS1H9NaYuZgh6x5sUlFtvB+GAaLZgxX34GHgXtgTjkVDcc/fgtddQHNpGcCGGyV1eLpXcyiaHmYzdGRVMXTkUu4S+BEuBccUSdPQSZwkMMQgi90QSiOM3n5D4n35TGoH+tgwhwpfxH/SeJxJhT7PtdJ+ycFKni1KuL2Ll7HeLa2wYgYzD4BGIeHIyBx2pEY31cI7JWh2TrWS+WoyZQmmVrcuk/2tgnGAKjvb4mPg+dLkoy8aIJXsuwmoOeeV/DadJIdkQ+aLgPb/Whbre+6nc/s9/lU0vpf97QTdvmwI0qEr1ei9AGdsNHmZI1lWdWc6Zw9XXb37WZ8z8Mu/7gw9BqHDxzbZ+TqAUaR/3aCHhntimxjoxXMm1HtWYYFCxo87CTPXoqqrx4vWu7zrUY0LQMj+w1en5aPKVJRD6iUlak=
-  file: "./index.js"
-  on:
-    branch: master
-    tags: true
-    repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
+  - provider: releases
+    api_key:
+      secure: HinyJ3XoZOGlVYsqcshYYIFKgbzDslE7EWWe7RoCBwWbQ9N2ZJNe529ZtLckBiLrDk4xL1q/4gOwep1J3VgoAbEDjE13NpMon4vwwct4SmB2bGSJzBiQBWaHVLzNm6eBQAshg2dmtdprysGXoRczF06ls9cSH1L1VXqv93Dj007umGd6QfzGQQK5EVvHRI5Hv6+hBGL5fMhxgkHXF3BXt+lGwsvQStlFW589qqsGRumpD2tdJKc9aqsoMujicYvFvHS1H9NaYuZgh6x5sUlFtvB+GAaLZgxX34GHgXtgTjkVDcc/fgtddQHNpGcCGGyV1eLpXcyiaHmYzdGRVMXTkUu4S+BEuBccUSdPQSZwkMMQgi90QSiOM3n5D4n35TGoH+tgwhwpfxH/SeJxJhT7PtdJ+ycFKni1KuL2Ll7HeLa2wYgYzD4BGIeHIyBx2pEY31cI7JWh2TrWS+WoyZQmmVrcuk/2tgnGAKjvb4mPg+dLkoy8aIJXsuwmoOeeV/DadJIdkQ+aLgPb/Whbre+6nc/s9/lU0vpf97QTdvmwI0qEr1ei9AGdsNHmZI1lWdWc6Zw9XXb37WZ8z8Mu/7gw9BqHDxzbZ+TqAUaR/3aCHhntimxjoxXMm1HtWYYFCxo87CTPXoqqrx4vWu7zrUY0LQMj+w1en5aPKVJRD6iUlak=
+    file: "./index.js"
+    on:
+      branch: master
+      tags: true
+      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
+  - provider: npm
+    email: thomas@parsiweb.fr 
+    api_key: 
+      secure: 3irgo953oRWddZiRHt9ubnl+XL9Wc535R6Z/Ch9TR1CpYU5bPsnMLY6OQqXRPMUWLWF7lT0c+36/ZxyfwO6Np8HP54xH520fipZhQ1lXUoXZmyVU1fJ6oOGcCh8KWqpcv1kke9qC+xYOHaye/tQW0MdpMnJfQsOejgbiWQW4MQwHEeFEd0Hkw3lnSnEXs211Sc/0ZTdmXs2b0umFHIa8c1jH1GH1eRR8bfXijN7Jg2cPhkvZI4yrXAUbtQ+anptC6ig4jfJy+Cq/SXD7f7bP1KKXM2AyIHYAt60QX4q7/25E/ahNx0SgoeMtRE36HvWZ299TfnZV0dc5LRyrwHHA2cnyYfHKDp6LcoR2TpEocLWRHSCERkuEA/XOFcQtK/TPYFGRGShncilk6PJyXGjOg9OH8uX1qyulJxa+/hZthkHcM+DlW6OLOWKsFH9yiyvdqycjBR1gnLQj1tdygPDkCXbyuW/gxcrf3LMBXopQ3/hprfbwtL491NBSJJ+2FbkZXcpl2m+3pobMKReohdoqETv+/mP0l57MaRLQ0QI3s0Ohy8r6OH/ioAGNa4vEa4qWB5I7OdcQfigxT3cr1cspZtAHAIYO0pdUlid69xIq2lcKP82MwC6CYxF8+NJeVLdBF0hprWCDKucIacxkZh/fO1HPsZLfdn8jStztDVJmK94= 
+    file_glob: true 
+    file:  
+      - "index.js"
+    on: 
+      branch: master
+      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parsere 
+      tags: true 
+
