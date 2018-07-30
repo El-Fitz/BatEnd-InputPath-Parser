@@ -1,19 +1,27 @@
 language: node_js
 jobs:
   include:
-    - stage: Test
-      script: npm test
-    - stage: Lint
-      script: npm run lint
+  - stage: Test
+    script: npm test
+  - stage: Lint
+    script: npm run lint
 stages:
-    - Test
-    - Lint
+- Test
+- Lint
 node_js:
-  - "8.10"
+- '8.10'
 cache:
   directories:
-    - "node_modules"
+  - node_modules
 install:
-  - npm install
-
+- npm install
 after_success: npm run coverage
+deploy:
+  provider: releases
+  api_key:
+    secure: HinyJ3XoZOGlVYsqcshYYIFKgbzDslE7EWWe7RoCBwWbQ9N2ZJNe529ZtLckBiLrDk4xL1q/4gOwep1J3VgoAbEDjE13NpMon4vwwct4SmB2bGSJzBiQBWaHVLzNm6eBQAshg2dmtdprysGXoRczF06ls9cSH1L1VXqv93Dj007umGd6QfzGQQK5EVvHRI5Hv6+hBGL5fMhxgkHXF3BXt+lGwsvQStlFW589qqsGRumpD2tdJKc9aqsoMujicYvFvHS1H9NaYuZgh6x5sUlFtvB+GAaLZgxX34GHgXtgTjkVDcc/fgtddQHNpGcCGGyV1eLpXcyiaHmYzdGRVMXTkUu4S+BEuBccUSdPQSZwkMMQgi90QSiOM3n5D4n35TGoH+tgwhwpfxH/SeJxJhT7PtdJ+ycFKni1KuL2Ll7HeLa2wYgYzD4BGIeHIyBx2pEY31cI7JWh2TrWS+WoyZQmmVrcuk/2tgnGAKjvb4mPg+dLkoy8aIJXsuwmoOeeV/DadJIdkQ+aLgPb/Whbre+6nc/s9/lU0vpf97QTdvmwI0qEr1ei9AGdsNHmZI1lWdWc6Zw9XXb37WZ8z8Mu/7gw9BqHDxzbZ+TqAUaR/3aCHhntimxjoxXMm1HtWYYFCxo87CTPXoqqrx4vWu7zrUY0LQMj+w1en5aPKVJRD6iUlak=
+  file: "./index.js"
+  on:
+    branch: master
+    tags: true
+    repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
