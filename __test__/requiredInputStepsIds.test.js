@@ -1,6 +1,3 @@
-const chai = require("chai");
-const expect = chai.expect;
-
 // Test suite
 describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 	const regex = /[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}/i;
@@ -11,11 +8,11 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResult = "Invalid Input Path";
 
 		it("should throw an error", () => {
-			expect(() => parser(inputPath)).to.throw(Error);
+			return expect(() => parser(inputPath)).toThrow(Error);
 		});
 
 		it("should throw a specific error", () => {
-			expect(() => parser(inputPath)).to.throw(expectedResult);
+			return expect(() => parser(inputPath)).toThrow(expectedResult);
 		});
 	});
 
@@ -25,19 +22,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of 2 elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -47,19 +44,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of 2 elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -69,19 +66,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of 2 elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -91,19 +88,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of x elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of inputs", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -113,19 +110,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of x elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of inputs", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -135,19 +132,19 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		let expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of x elements", () => {
-			expect(parser(inputPath).length).to.be.equal(expectedResultsCount);
+			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of inputs", () => {
-			parser(inputPath).every(i => expect(regex.test(i)).to.be.equal(true));
+			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -177,11 +174,11 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", function () {
 		];
 
 		it("should not throw an error", () => {
-			expect(() => parser(inputPath)).to.not.throw();
+			return expect(() => parser(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected array result", () => {
-			expect(parser(inputPath)).to.be.deep.equal(expectedResult);
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 });
