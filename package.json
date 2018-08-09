@@ -7,9 +7,19 @@
     "test": "test"
   },
   "scripts": {
-    "lint": "eslint ./",
-    "test": "nyc --reporter=text mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+		"lint": "eslint ./",
+		"test": "jest --coverage",
+		"unitTest": "jest ./__test__/Unit\\ Tests/ --coverage",
+		"integrationTest": "jest ./__test__/Integration\\ Tests/ --coverage",
+		"coverage": "cat ./coverage/lcov.info | coveralls"
+	},
+	"jest": {
+		"testURL": "http://localhost/",
+		"coveragePathIgnorePatterns": [
+			"/node_modules/",
+			"/test/",
+			"/__test__/"
+    ]
   },
   "repository": {
     "type": "git",
@@ -34,11 +44,9 @@
     "xregexp": "^4.2.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
     "coveralls": "^3.0.2",
     "eslint": "^5.2.0",
-    "mocha": "^5.2.0",
-    "nyc": "^12.0.2"
+    "jest": "^23.4.2"
   },
   "files": [
     "index.js"
