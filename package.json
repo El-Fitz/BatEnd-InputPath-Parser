@@ -8,7 +8,7 @@
   },
   "scripts": {
 		"lint": "eslint ./",
-		"test": "jest --coverage --coverageReporters=text-lcov",
+		"test": "jest --coverage",
 		"unitTest": "jest ./__test__/Unit\\ Tests/ --coverage",
 		"integrationTest": "jest ./__test__/Integration\\ Tests/ --coverage",
 		"coverage": "cat ./coverage/lcov.info | coveralls"
