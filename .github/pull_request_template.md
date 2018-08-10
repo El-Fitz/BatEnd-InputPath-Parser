@@ -10,8 +10,8 @@ This Pull Request... describe what the Pull Request does and what issues it solv
 - [ ] There are no production-critical changes without migration
 - e.g. backwards-incompatible data model changes
 ##
-#### Notion Task
-For more details check the [Notion Task](https://www.notion.so/parsifal/...).
+#### Clubhouse Story
+For more details check the [Clubhouse Story](https://app.clubhouse.io/parsifal-sas/story/...).
 
 #### How it works
 Describe your solution with high level details, even give examples if you think is necessary.
