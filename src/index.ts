@@ -73,7 +73,7 @@ function parseStringInputPath(stringInputPath: string) {
 
 function inputPathToStringArray(inputPath: InputPathType, result: string[] = []): string[] {
 	if (Array.isArray(inputPath)) {
-		return result.concat(inputPathArrayToStringArray(inputPath));
+		return inputPathArrayToStringArray(inputPath, result);
 	} else if (typeof inputPath === "string") {
 		return result.concat(inputPath);
 	} else if (typeof inputPath === "object") {
@@ -90,7 +90,8 @@ function inputPathArrayToStringArray(array: InputPathArrayType, result: string[]
 	} else if (typeof value === "string") {
 		return inputPathToStringArray(array, result.concat(value));
 	} else if (value instanceof Array) {
-		return inputPathArrayToStringArray(value, result.concat(inputPathArrayToStringArray(array)));
+		return inputPathToStringArray(value, result.concat(inputPathToStringArray(array)));
+		// return inputPathArrayToStringArray(value, result.concat(inputPathArrayToStringArray(array)));
 	} else {
 		return result.concat(inputPathObjectToStringArray(value));
 	}

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -p ./",
 		"lint": "tslint -p ./tsconfig.json",
-		"test": "jest --coverage --runInBand",
+		"test": "jest --coverage",
     "unitTest": "jest ./__tests__/Unit\\ Tests/ --coverage",
     "integrationTest": "jest ./__tests__/Integration\\ Tests/ --coverage",
     "coverage": "cat ./coverage/lcov.info | coveralls"

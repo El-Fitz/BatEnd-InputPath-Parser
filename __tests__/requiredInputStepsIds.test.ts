@@ -1,4 +1,9 @@
-// Test suite
+/*
+ * @Author: Thomas Léger 
+ * @Date: 2018-08-25 22:26:32 
+ * @Last Modified by: Thomas Léger
+ * @Last Modified time: 2018-08-25 22:55:09
+ */
 
 import { listRequiredInputStepsIds as parser } from "../src";
 
@@ -22,21 +27,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}";
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0"];
 		const expectedResultsCount = expectedResult.length;
-
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
-		});
+		const result = parser(inputPath);
 
 		it("should return an array of 2 elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -44,21 +46,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}", secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}"};
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0", "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f"];
 		const expectedResultsCount = expectedResult.length;
-
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
-		});
+		const result = parser(inputPath);
 
 		it("should return an array of 2 elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -66,21 +65,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}", secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}", thirdProperty: "{{636a803d-d921-410e-8c6c-cde20e9259b0.outputDataModels}}"};
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0", "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f"];
 		const expectedResultsCount = expectedResult.length;
-
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
-		});
+		const result = parser(inputPath);
 
 		it("should return an array of 2 elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of UUIDs v4", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -88,21 +84,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels.blabla}}", secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}", thirdProperty: "{{6fc41d70-a16d-44d8-b1b5-eec0ceffa926.a[5]}}" };
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0", "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f", "6fc41d70-a16d-44d8-b1b5-eec0ceffa926"];
 		const expectedResultsCount = expectedResult.length;
+		const result = parser(inputPath);
 
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+		it("should return an array of 2 elements", () => {
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
-		it("should return an array of x elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
-		});
-
-		it("should return an array of inputs", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+		it("should return an array of UUIDs v4", () => {
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -110,21 +103,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = ["{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}"];
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0"];
 		const expectedResultsCount = expectedResult.length;
+		const result = parser(inputPath);
 
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+		it("should return an array of 2 elements", () => {
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
-		it("should return an array of x elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
-		});
-
-		it("should return an array of inputs", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+		it("should return an array of UUIDs v4", () => {
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -132,21 +122,18 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 		const inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.a}} {{636a803d-d921-410e-8c6c-cde20e9259b0.b}}/{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}?something={{636a803d-d921-410e-8c6c-cde20e9259b0.d.e}}" };
 		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0", "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f"];
 		const expectedResultsCount = expectedResult.length;
+		const result = parser(inputPath);
 
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+		it("should return an array of 2 elements", () => {
+			return expect(result.length).toStrictEqual(expectedResultsCount);
 		});
 
-		it("should return an array of x elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
-		});
-
-		it("should return an array of inputs", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+		it("should return an array of UUIDs v4", () => {
+			return expect(result.map((i) => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(result).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -174,10 +161,6 @@ describe("Input Path Parser - Required Inputs IDs List - Tests", () => {
 			"636a803d-d921-410e-8c6c-cde20e9259b0",
 			"20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f",
 		];
-
-		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
-		});
 
 		it("should return the expected array result", () => {
 			return expect(parser(inputPath)).toStrictEqual(expectedResult);

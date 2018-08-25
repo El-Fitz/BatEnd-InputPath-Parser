@@ -1,4 +1,9 @@
-// Test suite
+/*
+ * @Author: Thomas Léger 
+ * @Date: 2018-08-25 22:26:17 
+ * @Last Modified by:   Thomas Léger 
+ * @Last Modified time: 2018-08-25 22:26:17 
+ */
 
 import { parsedInputPath as parser } from "../src";
 describe("Input Path Parser - Parsed Input Path- Tests", () => {
