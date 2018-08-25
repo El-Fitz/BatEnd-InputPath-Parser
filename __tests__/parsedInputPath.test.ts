@@ -1,11 +1,12 @@
 // Test suite
-describe("Input Path Parser - Parsed Input Path- Tests", function () {
-	const regex = /[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}/i;
-	const parser = require("../src/index.js").parsedInputPath;
 
-	describe("Empty Input Path Parsing", function () {
-		let inputPath = {property: ""};
-		let expectedResult = "Invalid Input Path";
+import { parsedInputPath as parser } from "../src";
+describe("Input Path Parser - Parsed Input Path- Tests", () => {
+	const regex = /[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}/i;
+
+	describe("Empty Input Path Parsing", () => {
+		const inputPath = {property: ""};
+		const expectedResult = "Invalid Input Path";
 
 		it("should throw an error", () => {
 			return expect(() => parser(inputPath)).toThrow(Error);
@@ -16,9 +17,9 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Simple Input Paths Parsing", function () {
-		let inputPath = "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}";
-		let expectedResult = "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels";
+	describe("Simple Input Paths Parsing", () => {
+		const inputPath = "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}";
+		const expectedResult = "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels";
 
 		it("should not throw an error", () => {
 			return expect(() => parser(inputPath)).not.toThrow();
@@ -29,12 +30,12 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Simple Object Input Path Parsing", function () {
-		let inputPath = {
+	describe("Simple Object Input Path Parsing", () => {
+		const inputPath = {
 			property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}",
 			secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}",
 		};
-		let expectedResult = {
+		const expectedResult = {
 			property: "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels",
 			secondProperty: "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f",
 		};
@@ -48,13 +49,13 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Simple Object Input Path With Duplicates Parsing", function () {
-		let inputPath = {
+	describe("Simple Object Input Path With Duplicates Parsing", () => {
+		const inputPath = {
 			property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}",
 			secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}",
 			thirdProperty: "{{636a803d-d921-410e-8c6c-cde20e9259b0.outputDataModels}}",
 		};
-		let expectedResult = {
+		const expectedResult = {
 			property: "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels",
 			secondProperty: "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f",
 			thirdProperty: "636a803d-d921-410e-8c6c-cde20e9259b0.outputDataModels",
@@ -69,13 +70,13 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Nested Properties Input Paths Parsing", function () {
-		let inputPath = {
+	describe("Nested Properties Input Paths Parsing", () => {
+		const inputPath = {
 			property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels.blabla}}",
 			secondProperty: "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f}}",
 			thirdProperty: "{{6fc41d70-a16d-44d8-b1b5-eec0ceffa926.a[5]}}",
 		};
-		let expectedResult = {
+		const expectedResult = {
 			property: "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels.blabla",
 			secondProperty: "20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f",
 			thirdProperty: "6fc41d70-a16d-44d8-b1b5-eec0ceffa926.a[5]",
@@ -90,10 +91,10 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Arrays Input Path Parsing", function () {
-		let inputPath = ["{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}"];
-		let expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels"];
-		let expectedResultsCount = expectedResult.length;
+	describe("Arrays Input Path Parsing", () => {
+		const inputPath = ["{{636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels}}"];
+		const expectedResult = ["636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels"];
+		const expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
 			return expect(() => parser(inputPath)).not.toThrow();
@@ -112,9 +113,9 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Complex Single Property Input Path Parsing", function () {
-		let inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.a}} {{636a803d-d921-410e-8c6c-cde20e9259b0.b}}/{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}?something={{636a803d-d921-410e-8c6c-cde20e9259b0.d.e}}"};
-		let expectedResult = {
+	describe("Complex Single Property Input Path Parsing", () => {
+		const inputPath = { property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.a}} {{636a803d-d921-410e-8c6c-cde20e9259b0.b}}/{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}?something={{636a803d-d921-410e-8c6c-cde20e9259b0.d.e}}"};
+		const expectedResult = {
 			property: [
 				"636a803d-d921-410e-8c6c-cde20e9259b0.a",
 				"636a803d-d921-410e-8c6c-cde20e9259b0.b",
@@ -132,8 +133,8 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 		});
 	});
 
-	describe("Complex Multiple Properties Input Path Parsing", function () {
-		let inputPath = {
+	describe("Complex Multiple Properties Input Path Parsing", () => {
+		const inputPath = {
 			property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.a}} {{636a803d-d921-410e-8c6c-cde20e9259b0.b}}/{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}?something={{636a803d-d921-410e-8c6c-cde20e9259b0.d.e}}",
 			secondProperty: {
 				thirdProperty: "{{636a803d-d921-410e-8c6c-cde20e9259b0.f}}",
@@ -152,7 +153,7 @@ describe("Input Path Parser - Parsed Input Path- Tests", function () {
 				seventhProperty: "{{636a803d-d921-410e-8c6c-cde20e9259b0.n}}",
 			},
 		};
-		let expectedResult = {
+		const expectedResult = {
 			property: [
 				"636a803d-d921-410e-8c6c-cde20e9259b0.a",
 				"636a803d-d921-410e-8c6c-cde20e9259b0.b",

@@ -1,5 +1,4 @@
-import "array+helpers";
-import { XRegExp } from "xregexp";
+import XRegExp from "xregexp";
 const inputPathRegex = /((([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))(((\.[a-zA-Z_0-9]*)|(\[\d{0,4}\]))+?)*)(?=}})/gi;
 const uuidV4Regex = /(([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))/gi;
 
@@ -8,6 +7,32 @@ interface InputPathObjectType {
 	[key: string]: InputPathType;
 }
 interface InputPathArrayType extends Array<InputPathType> { }
+
+/* tslint:disable:no-unsafe-any */
+declare global {
+	interface Array<T> {
+		unique(): T[];
+		flatDeep(): T[];
+		checkIfValidInputPathParserArray(): T[];
+	}
+}
+
+// MARK: Helper functions
+Array.prototype.unique = function() {
+	return Array.from(new Set(this));
+};
+
+Array.prototype.flatDeep = function() {
+	return this.reduce((acc, val) => Array.isArray(val) ? acc.concat(val.flatDeep()) : acc.concat(val), []);
+};
+
+Array.prototype.checkIfValidInputPathParserArray = function() {
+	if (this === null || this === undefined || !(Array.isArray(this)) || this.length === 0 || this.includes(undefined) || this.includes("undefined") || this.includes("")) {
+		throw new Error("Invalid Input Path");
+	}
+	return this;
+};
+/* tslint:enable:no-unsafe-any */
 
 export function listRequiredInputs(inputPath: InputPathType): string[] {
 	return listUniqueInputPathItemsMatchingRegex(inputPath, inputPathRegex);
