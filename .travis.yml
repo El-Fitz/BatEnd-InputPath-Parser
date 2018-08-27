@@ -1,40 +1,58 @@
 language: node_js
 jobs:
   include:
-  - stage: Test
+  - stage: build
+    install:
+    - npm install
+    - npm install -g typescript
+    script: npm run build
+  - stage: test
     install:
     - npm install
     script: npm test
     after_success: npm run coverage
-  - stage: Lint
+  - stage: lint
     install:
     - npm install tslint
     script: npm run lint
+  - stage: deploy
+    install:
+    - npm install
+    - npm install -g typescript
+    script: npm run build
+    deploy:
+    - provider: releases
+      skip_cleanup: true
+      api_key:
+        secure: HinyJ3XoZOGlVYsqcshYYIFKgbzDslE7EWWe7RoCBwWbQ9N2ZJNe529ZtLckBiLrDk4xL1q/4gOwep1J3VgoAbEDjE13NpMon4vwwct4SmB2bGSJzBiQBWaHVLzNm6eBQAshg2dmtdprysGXoRczF06ls9cSH1L1VXqv93Dj007umGd6QfzGQQK5EVvHRI5Hv6+hBGL5fMhxgkHXF3BXt+lGwsvQStlFW589qqsGRumpD2tdJKc9aqsoMujicYvFvHS1H9NaYuZgh6x5sUlFtvB+GAaLZgxX34GHgXtgTjkVDcc/fgtddQHNpGcCGGyV1eLpXcyiaHmYzdGRVMXTkUu4S+BEuBccUSdPQSZwkMMQgi90QSiOM3n5D4n35TGoH+tgwhwpfxH/SeJxJhT7PtdJ+ycFKni1KuL2Ll7HeLa2wYgYzD4BGIeHIyBx2pEY31cI7JWh2TrWS+WoyZQmmVrcuk/2tgnGAKjvb4mPg+dLkoy8aIJXsuwmoOeeV/DadJIdkQ+aLgPb/Whbre+6nc/s9/lU0vpf97QTdvmwI0qEr1ei9AGdsNHmZI1lWdWc6Zw9XXb37WZ8z8Mu/7gw9BqHDxzbZ+TqAUaR/3aCHhntimxjoxXMm1HtWYYFCxo87CTPXoqqrx4vWu7zrUY0LQMj+w1en5aPKVJRD6iUlak=
+      file_glob: true
+      file:
+      - __tests__/**/*
+      - tsconfig.json
+      - tslint.json
+      - src/**/*
+      on:
+        branch: master
+        repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
+        tags: true
+    - provider: npm
+      skip_cleanup: true
+      email: thomas@parsiweb.fr
+      api_key:
+        secure: aqFlLXSW0zIzrkDsdWiusjXQDu/1VZ8L+J26vskLftM/kUXmSwP/PLTBWPnf9dENPEPJkcz4mSNT80UnHO2KOO4aXb9SETzdpgYVHEDWnqjZWI7f7gQe9FNQobaM6vK/hpfBCEs3paUuW8ElVC0aQYEwNXtYZvOJk6qWRPG73C476UfCzSSvbVuW59s9VkZVjQYv1edDmwIdFvmsCoHxQYavUn3Z94Kug1Y5RYngYnDW8WZDA39vM6H/WquiDBG80+2H3Zx5tY4V4sVMHVcIjhYm+C80LrDCSG4sOgNgAD0V7+yN0JieL/MrzWuI5EIHv9pmjcAt3yhhg4qO554Z1W7LUQnbB6qPxtNT7KtT5+ePOh16qKe0NW0/oirLHOVRUCHkWE7xTd1bRUM3+MuH9C8QqdBzK05zWMkXToTMyeKKKwV0SE+8UD3Ac50vvVAaIm6qV7GqzqvfJQloww9VuOZ8W590TyjEc7WmIWkwdrEsQ16gxrsJE0zJJpnEmnFxKkDOR8Yc8oEXWPv86RZFlceY5Ber4LTISl2YhhWWeFAlpcHSkkfc4k32J+c2upM4EYQr7kw1xxAHCyv1eI//bsnccrRlPcCtqWFb0xQlL9Fz4d6HI1v6IzQOtRIzIRhXCcWEfdaUfuosG1IHO+bm6jHN2JwLJ3+XMhtz8LprlPE= 
+      file_glob: true
+      file:
+      - lib/**/*
+      on:
+        branch: master
+        repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
+        tags: true
 stages:
-- Test
-- Lint
+- test
+- lint
+- deploy
 node_js:
 - '8.10'
 cache:
   directories:
   - node_modules
-deploy:
-  - provider: releases
-    api_key:
-      secure: HinyJ3XoZOGlVYsqcshYYIFKgbzDslE7EWWe7RoCBwWbQ9N2ZJNe529ZtLckBiLrDk4xL1q/4gOwep1J3VgoAbEDjE13NpMon4vwwct4SmB2bGSJzBiQBWaHVLzNm6eBQAshg2dmtdprysGXoRczF06ls9cSH1L1VXqv93Dj007umGd6QfzGQQK5EVvHRI5Hv6+hBGL5fMhxgkHXF3BXt+lGwsvQStlFW589qqsGRumpD2tdJKc9aqsoMujicYvFvHS1H9NaYuZgh6x5sUlFtvB+GAaLZgxX34GHgXtgTjkVDcc/fgtddQHNpGcCGGyV1eLpXcyiaHmYzdGRVMXTkUu4S+BEuBccUSdPQSZwkMMQgi90QSiOM3n5D4n35TGoH+tgwhwpfxH/SeJxJhT7PtdJ+ycFKni1KuL2Ll7HeLa2wYgYzD4BGIeHIyBx2pEY31cI7JWh2TrWS+WoyZQmmVrcuk/2tgnGAKjvb4mPg+dLkoy8aIJXsuwmoOeeV/DadJIdkQ+aLgPb/Whbre+6nc/s9/lU0vpf97QTdvmwI0qEr1ei9AGdsNHmZI1lWdWc6Zw9XXb37WZ8z8Mu/7gw9BqHDxzbZ+TqAUaR/3aCHhntimxjoxXMm1HtWYYFCxo87CTPXoqqrx4vWu7zrUY0LQMj+w1en5aPKVJRD6iUlak=
-    file: "./index.js"
-    on:
-      branch: master
-      tags: true
-      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
-  - provider: npm
-    email: thomas@parsiweb.fr 
-    api_key: 
-      secure: aqFlLXSW0zIzrkDsdWiusjXQDu/1VZ8L+J26vskLftM/kUXmSwP/PLTBWPnf9dENPEPJkcz4mSNT80UnHO2KOO4aXb9SETzdpgYVHEDWnqjZWI7f7gQe9FNQobaM6vK/hpfBCEs3paUuW8ElVC0aQYEwNXtYZvOJk6qWRPG73C476UfCzSSvbVuW59s9VkZVjQYv1edDmwIdFvmsCoHxQYavUn3Z94Kug1Y5RYngYnDW8WZDA39vM6H/WquiDBG80+2H3Zx5tY4V4sVMHVcIjhYm+C80LrDCSG4sOgNgAD0V7+yN0JieL/MrzWuI5EIHv9pmjcAt3yhhg4qO554Z1W7LUQnbB6qPxtNT7KtT5+ePOh16qKe0NW0/oirLHOVRUCHkWE7xTd1bRUM3+MuH9C8QqdBzK05zWMkXToTMyeKKKwV0SE+8UD3Ac50vvVAaIm6qV7GqzqvfJQloww9VuOZ8W590TyjEc7WmIWkwdrEsQ16gxrsJE0zJJpnEmnFxKkDOR8Yc8oEXWPv86RZFlceY5Ber4LTISl2YhhWWeFAlpcHSkkfc4k32J+c2upM4EYQr7kw1xxAHCyv1eI//bsnccrRlPcCtqWFb0xQlL9Fz4d6HI1v6IzQOtRIzIRhXCcWEfdaUfuosG1IHO+bm6jHN2JwLJ3+XMhtz8LprlPE= 
-    file_glob: true 
-    file:  
-      - "index.js"
-    on: 
-      branch: master
-      repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser 
-      tags: true
