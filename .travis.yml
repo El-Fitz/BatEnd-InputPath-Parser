@@ -8,7 +8,7 @@ jobs:
     after_success: npm run coverage
   - stage: Lint
     install:
-    - npm install eslint
+    - npm install tslint
     script: npm run lint
 stages:
 - Test

@@ -2,24 +2,35 @@
   "name": "@parsifal-sas/batend-inputpath-parser",
   "version": "1.0.2",
   "description": "A simple UUID InputPath parser",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-		"lint": "eslint ./",
-		"test": "jest --coverage",
-		"unitTest": "jest ./__test__/Unit\\ Tests/ --coverage",
-		"integrationTest": "jest ./__test__/Integration\\ Tests/ --coverage",
-		"coverage": "cat ./coverage/lcov.info | coveralls"
-	},
-	"jest": {
-		"testURL": "http://localhost/",
-		"coveragePathIgnorePatterns": [
-			"/node_modules/",
-			"/test/",
-			"/__test__/"
-    ]
+    "build": "tsc -p ./",
+    "lint": "tslint -p ./tsconfig.json",
+    "test": "jest --coverage",
+    "unitTest": "jest ./__tests__/Unit\\ Tests/ --coverage",
+    "integrationTest": "jest ./__tests__/Integration\\ Tests/ --coverage",
+    "coverage": "cat ./coverage/lcov.info | coveralls"
+  },
+  "jest": {
+    "testURL": "http://localhost/",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/",
+      "/__test__/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "testRegex": "__tests__/.*\\.test\\.(ts|tsx|js)$"
   },
   "repository": {
     "type": "git",
@@ -44,9 +55,13 @@
     "xregexp": "^4.2.0"
   },
   "devDependencies": {
+    "@types/xregexp": "^3.0.29",
     "coveralls": "^3.0.2",
     "eslint": "^5.2.0",
-    "jest": "^23.4.2"
+    "jest": "^23.4.2",
+    "ts-jest": "^23.1.4",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
   },
   "files": [
     "index.js"
