@@ -19,7 +19,7 @@ jobs:
     install:
     - npm install
     - npm install -g typescript
-    script: npm run build
+    script: npm run build && ls -l ./lib
     deploy:
     - provider: releases
       skip_cleanup: true
@@ -48,6 +48,7 @@ jobs:
         repo: Parsifal-SAS/BatEnd-Helpers-InputPath-Parser
         tags: true
 stages:
+- build
 - test
 - lint
 - deploy
