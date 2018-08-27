@@ -12,7 +12,6 @@ interface InputPathArrayType extends Array<InputPathType> { }
 declare global {
 	interface Array<T> {
 		unique(): T[];
-		flatDeep(): T[];
 		checkIfValidInputPathParserArray(): T[];
 	}
 }
@@ -20,10 +19,6 @@ declare global {
 // MARK: Helper functions
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
-};
-
-Array.prototype.flatDeep = function() {
-	return this.reduce((acc, val) => Array.isArray(val) ? acc.concat(val.flatDeep()) : acc.concat(val), []);
 };
 
 Array.prototype.checkIfValidInputPathParserArray = function() {
@@ -91,7 +86,6 @@ function inputPathArrayToStringArray(array: InputPathArrayType, result: string[]
 		return inputPathToStringArray(array, result.concat(value));
 	} else if (value instanceof Array) {
 		return inputPathToStringArray(value, result.concat(inputPathToStringArray(array)));
-		// return inputPathArrayToStringArray(value, result.concat(inputPathArrayToStringArray(array)));
 	} else {
 		return result.concat(inputPathObjectToStringArray(value));
 	}

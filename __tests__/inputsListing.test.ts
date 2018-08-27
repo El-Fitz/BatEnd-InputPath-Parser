@@ -2,7 +2,7 @@
  * @Author: Thomas Léger 
  * @Date: 2018-08-25 22:26:07 
  * @Last Modified by: Thomas Léger
- * @Last Modified time: 2018-08-25 22:55:23
+ * @Last Modified time: 2018-08-27 18:40:16
  */
 
 import { listRequiredInputs as parser } from "../src";
@@ -169,6 +169,44 @@ describe("Input Path Parser - Required Inputs List - Tests", () => {
 			"636a803d-d921-410e-8c6c-cde20e9259b0.k.l",
 			"636a803d-d921-410e-8c6c-cde20e9259b0.m[0]",
 			"636a803d-d921-410e-8c6c-cde20e9259b0.n",
+		];
+
+		it("should return the expected array result", () => {
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+		});
+	});
+
+	describe("Complex Multiple Properties Array Input Path Parsing", () => {
+		const inputPath = ["{{636a803d-d921-410e-8c6c-cde20e9259b0.a}}", ["{{636a803d-d921-410e-8c6c-cde20e9259b0.b}}", "{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}"]];
+
+		const expectedResult = [
+			"636a803d-d921-410e-8c6c-cde20e9259b0.a",
+			"636a803d-d921-410e-8c6c-cde20e9259b0.b",
+			"20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]",
+		];
+
+		it("should return the expected array result", () => {
+			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+		});
+	});
+
+	describe("Complex Multiple Properties Object Array Input Path Parsing", () => {
+		const inputPath = [
+			"{{636a803d-d921-410e-8c6c-cde20e9259b0.a}}",
+			{
+				property: "{{636a803d-d921-410e-8c6c-cde20e9259b0.a}} {{636a803d-d921-410e-8c6c-cde20e9259b0.b}}/{{20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]}}?something={{636a803d-d921-410e-8c6c-cde20e9259b0.d.e}}",
+				secondProperty: {
+					thirdProperty: "{{636a803d-d921-410e-8c6c-cde20e9259b0.f}}",
+				}
+			}
+		];
+
+		const expectedResult = [
+			"636a803d-d921-410e-8c6c-cde20e9259b0.a",
+			"636a803d-d921-410e-8c6c-cde20e9259b0.b",
+			"20741cd6-8df4-4e7d-8a4c-944c8d0c4b7f.c[0]",
+			"636a803d-d921-410e-8c6c-cde20e9259b0.d.e",
+			"636a803d-d921-410e-8c6c-cde20e9259b0.f",
 		];
 
 		it("should return the expected array result", () => {
