@@ -4,9 +4,6 @@
   "description": "A simple UUID InputPath parser",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "build": "tsc -p ./",
     "lint": "tslint -p ./tsconfig.json",
@@ -64,6 +61,6 @@
     "typescript": "^3.0.1"
   },
   "files": [
-    "index.js"
+    "lib/*"
   ]
 }
