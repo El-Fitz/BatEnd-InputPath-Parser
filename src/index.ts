@@ -30,22 +30,25 @@ Array.prototype.checkIfValidInputPathParserArray = function() {
 /* tslint:enable:no-unsafe-any */
 
 export function listRequiredInputs(inputPath: InputPathType): string[] {
-	return listUniqueInputPathItemsMatchingRegex(inputPath, inputPathRegex);
+	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
+	return listUniqueInputPathItemsMatchingRegex(inputPathCopy, inputPathRegex);
 }
 
 export function listRequiredInputStepsIds(inputPath: InputPathType): string[] {
-	return listUniqueInputPathItemsMatchingRegex(inputPath, uuidV4Regex);
+	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
+	return listUniqueInputPathItemsMatchingRegex(inputPathCopy, uuidV4Regex);
 }
 
 export function parsedInputPath(inputPath: InputPathType): InputPathType {
-	if (Array.isArray(inputPath)) {
-		return inputPath.map(parsedInputPath);
-	} else if (typeof inputPath === "string") {
-		return parseStringInputPath(inputPath);
-	} else if (typeof inputPath === "object") {
+	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
+	if (Array.isArray(inputPathCopy)) {
+		return inputPathCopy.map(parsedInputPath);
+	} else if (typeof inputPathCopy === "string") {
+		return parseStringInputPath(inputPathCopy);
+	} else if (typeof inputPathCopy === "object") {
 		const result: InputPathType = {};
 		Object.keys(inputPath).forEach((key) => {
-			result[key] = parsedInputPath(inputPath[key]); // <- recursive call
+			result[key] = parsedInputPath(inputPathCopy[key]); // <- recursive call
 		});
 		return result;
 	} else {
