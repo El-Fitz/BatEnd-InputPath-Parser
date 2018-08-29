@@ -19,7 +19,7 @@ jobs:
     install:
     - npm install
     - npm install -g typescript
-    script: npm run build && ls -l ./lib
+    script: npm run build
     deploy:
     - provider: releases
       skip_cleanup: true
