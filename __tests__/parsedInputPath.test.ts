@@ -5,20 +5,24 @@
  * @Last Modified time: 2018-08-25 22:26:17 
  */
 
-import { parsedInputPath as parser } from "../src";
+import { InputPathParser } from "../src";
+
 describe("Input Path Parser - Parsed Input Path- Tests", () => {
+	const inputPathRegex = /((([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))(((\.[a-zA-Z_0-9]*)|(\[\d{0,4}\]))+?)*)(?=}})/gi;
+	const uuidV4Regex = /(([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))/gi;
 	const regex = /[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}/i;
+	const inputPathParser = new InputPathParser(inputPathRegex, uuidV4Regex);
 
 	describe("Empty Input Path Parsing", () => {
 		const inputPath = {property: ""};
 		const expectedResult = "Invalid Input Path";
 
 		it("should throw an error", () => {
-			return expect(() => parser(inputPath)).toThrow(Error);
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).toThrow(Error);
 		});
 
 		it("should throw a specific error", () => {
-			return expect(() => parser(inputPath)).toThrow(expectedResult);
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).toThrow(expectedResult);
 		});
 	});
 
@@ -27,11 +31,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		const expectedResult = "636a803d-d921-410e-8c6c-cde20e9259b0.inputDataModels";
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -46,11 +50,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		};
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -67,11 +71,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		};
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -88,11 +92,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		};
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -102,19 +106,19 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		const expectedResultsCount = expectedResult.length;
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return an array of x elements", () => {
-			return expect(parser(inputPath).length).toStrictEqual(expectedResultsCount);
+			return expect(inputPathParser.parsedInputPath(inputPath).length).toStrictEqual(expectedResultsCount);
 		});
 
 		it("should return an array of inputs", () => {
-			return expect(parser(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
+			return expect(inputPathParser.parsedInputPath(inputPath).map(i => regex.test(i)).reduce( (acc, value) => acc && value, true)).toStrictEqual(true);
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -130,11 +134,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		};
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 
@@ -184,11 +188,11 @@ describe("Input Path Parser - Parsed Input Path- Tests", () => {
 		};
 
 		it("should not throw an error", () => {
-			return expect(() => parser(inputPath)).not.toThrow();
+			return expect(() => inputPathParser.parsedInputPath(inputPath)).not.toThrow();
 		});
 
 		it("should return the expected array result", () => {
-			return expect(parser(inputPath)).toStrictEqual(expectedResult);
+			return expect(inputPathParser.parsedInputPath(inputPath)).toStrictEqual(expectedResult);
 		});
 	});
 });

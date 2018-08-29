@@ -1,6 +1,6 @@
 import XRegExp from "xregexp";
-const inputPathRegex = /((([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))(((\.[a-zA-Z_0-9]*)|(\[\d{0,4}\]))+?)*)(?=}})/gi;
-const uuidV4Regex = /(([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))/gi;
+// const inputPathRegex = /((([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))(((\.[a-zA-Z_0-9]*)|(\[\d{0,4}\]))+?)*)(?=}})/gi;
+// const uuidV4Regex = /(([A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12})|(FlowExecutionInput))/gi;
 
 type InputPathType = string | InputPathArrayType | InputPathObjectType;
 interface InputPathObjectType {
@@ -29,72 +29,85 @@ Array.prototype.checkIfValidInputPathParserArray = function() {
 };
 /* tslint:enable:no-unsafe-any */
 
-export function listRequiredInputs(inputPath: InputPathType): string[] {
-	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
-	return listUniqueInputPathItemsMatchingRegex(inputPathCopy, inputPathRegex);
-}
+export class InputPathParser {
+	public readonly inputPathRegex: RegExp;
+	public readonly itemIdRegex: RegExp;
 
-export function listRequiredInputStepsIds(inputPath: InputPathType): string[] {
-	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
-	return listUniqueInputPathItemsMatchingRegex(inputPathCopy, uuidV4Regex);
-}
-
-export function parsedInputPath(inputPath: InputPathType): InputPathType {
-	const inputPathCopy = JSON.parse(JSON.stringify(inputPath));
-	if (Array.isArray(inputPathCopy)) {
-		return inputPathCopy.map(parsedInputPath);
-	} else if (typeof inputPathCopy === "string") {
-		return parseStringInputPath(inputPathCopy);
-	} else if (typeof inputPathCopy === "object") {
-		const result: InputPathType = {};
-		Object.keys(inputPath).forEach((key) => {
-			result[key] = parsedInputPath(inputPathCopy[key]); // <- recursive call
-		});
-		return result;
-	} else {
-		throw new Error("Input Path must be an Object, an Array or a String. Is " + typeof inputPath);
+	constructor(inputPathRegex: RegExp, itemIdRegex: RegExp) {
+		this.inputPathRegex = inputPathRegex;
+		this.itemIdRegex = itemIdRegex;
 	}
-}
 
-function listUniqueInputPathItemsMatchingRegex(inputPath: InputPathType, regex: RegExp): string[] {
-	return inputPathToStringArray(inputPath).checkIfValidInputPathParserArray().reduce((acc: string[], value: string) => acc.concat(XRegExp.match(value, regex, "all")), []).checkIfValidInputPathParserArray().unique();
-}
-
-// TODO: Properly parse the string Input Path instead of listing it's required inputs
-function parseStringInputPath(stringInputPath: string) {
-	if (stringInputPath === null || stringInputPath === undefined || stringInputPath === "") {
-		throw new Error("Invalid Input Path");
+	public listRequiredInputs(inputPath: InputPathType): string[] {
+		// tslint:disable-next-line:no-unsafe-any
+		const inputPathCopy: InputPathType = JSON.parse(JSON.stringify(inputPath));
+		return this.listUniqueInputPathItemsMatchingRegex(inputPathCopy, this.inputPathRegex);
 	}
-	const result = XRegExp.match(stringInputPath, inputPathRegex, "all");
-	return (result.length === 1) ? result[0] : result;
-}
 
-function inputPathToStringArray(inputPath: InputPathType, result: string[] = []): string[] {
-	if (Array.isArray(inputPath)) {
-		return inputPathArrayToStringArray(inputPath, result);
-	} else if (typeof inputPath === "string") {
-		return result.concat(inputPath);
-	} else if (typeof inputPath === "object") {
-		return result.concat(inputPathObjectToStringArray(inputPath));
-	} else {
-		throw new Error("Input Path must be an Object, an Array or a String. Is " + typeof inputPath);
+	public listRequiredInputStepsIds(inputPath: InputPathType): string[] {
+		// tslint:disable-next-line:no-unsafe-any
+		const inputPathCopy: InputPathType = JSON.parse(JSON.stringify(inputPath));
+		return this.listUniqueInputPathItemsMatchingRegex(inputPathCopy, this.itemIdRegex);
 	}
-}
 
-function inputPathArrayToStringArray(array: InputPathArrayType, result: string[] = []): string[] {
-	const value = array.shift();
-	if (value === undefined) {
-		return result;
-	} else if (typeof value === "string") {
-		return inputPathToStringArray(array, result.concat(value));
-	} else if (value instanceof Array) {
-		return inputPathToStringArray(value, result.concat(inputPathToStringArray(array)));
-	} else {
-		return result.concat(inputPathObjectToStringArray(value));
+	// TODO: Figure out why `this` is lost in the recursion from the `object` case (to see what I mean, remove second parameter from call to parsedInputPath and run tests)
+	public parsedInputPath(inputPath: InputPathType, inputPathParser: InputPathParser = this): InputPathType {
+		// tslint:disable-next-line:no-unsafe-any
+		const inputPathCopy: InputPathType = JSON.parse(JSON.stringify(inputPath));
+		if (Array.isArray(inputPathCopy)) {
+			return inputPathCopy.map((item) => inputPathParser.parsedInputPath(item, inputPathParser));
+		} else if (typeof inputPathCopy === "string") {
+			return inputPathParser.parseStringInputPath(inputPathCopy);
+		} else if (typeof inputPathCopy === "object") {
+			const result: InputPathType = {};
+			Object.keys(inputPath).forEach((key) => {
+				result[key] = inputPathParser.parsedInputPath(inputPathCopy[key], inputPathParser); // <- recursive call
+			});
+			return result;
+		} else {
+			throw new Error("Input Path must be an Object, an Array or a String. Is " + typeof inputPath);
+		}
 	}
-}
 
-// How do we handle fucking objects ?
-function inputPathObjectToStringArray(obj: InputPathObjectType): string[] {
-	return Object.values(obj).reduce((acc: string[], value: InputPathType) => inputPathToStringArray(value, acc), []);
+	private listUniqueInputPathItemsMatchingRegex(inputPath: InputPathType, regex: RegExp): string[] {
+		return this.inputPathToStringArray(inputPath).checkIfValidInputPathParserArray().reduce((acc: string[], value: string) => acc.concat(XRegExp.match(value, regex, "all")), []).checkIfValidInputPathParserArray().unique();
+	}
+
+	// TODO: Properly parse the string Input Path instead of listing it's required inputs
+	private parseStringInputPath(stringInputPath: string) {
+		if (stringInputPath === null || stringInputPath === undefined || stringInputPath === "") {
+			throw new Error("Invalid Input Path");
+		}
+		const result = XRegExp.match(stringInputPath, this.inputPathRegex, "all");
+		return (result.length === 1) ? result[0] : result;
+	}
+
+	private inputPathToStringArray(inputPath: InputPathType, result: string[] = []): string[] {
+		if (Array.isArray(inputPath)) {
+			return this.inputPathArrayToStringArray(inputPath, result);
+		} else if (typeof inputPath === "string") {
+			return result.concat(inputPath);
+		} else if (typeof inputPath === "object") {
+			return result.concat(this.inputPathObjectToStringArray(inputPath));
+		} else {
+			throw new Error("Input Path must be an Object, an Array or a String. Is " + typeof inputPath);
+		}
+	}
+
+	private inputPathArrayToStringArray(array: InputPathArrayType, result: string[] = []): string[] {
+		const value = array.shift();
+		if (value === undefined) {
+			return result;
+		} else if (typeof value === "string") {
+			return this.inputPathToStringArray(array, result.concat(value));
+		} else if (value instanceof Array) {
+			return this.inputPathToStringArray(value, result.concat(this.inputPathToStringArray(array)));
+		} else {
+			return result.concat(this.inputPathObjectToStringArray(value));
+		}
+	}
+
+	private inputPathObjectToStringArray(obj: InputPathObjectType): string[] {
+		return Object.values(obj).reduce((acc: string[], value: InputPathType) => this.inputPathToStringArray(value, acc), []);
+	}
 }
