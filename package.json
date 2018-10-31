@@ -1,6 +1,6 @@
 {
   "name": "@parsifal-sas/batend-inputpath-parser",
-  "version": "3.0.0",
+  "version": "0.0.0-development",
   "description": "A simple UUID InputPath parser",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -8,9 +8,12 @@
     "build": "tsc -p ./",
     "lint": "tslint -p ./tsconfig.json",
     "test": "jest --coverage",
+    "ci-test": "jest --ci --reporters=default --reporters=jest-junit --coverage",
     "unitTest": "jest ./__tests__/Unit\\ Tests/ --coverage",
     "integrationTest": "jest ./__tests__/Integration\\ Tests/ --coverage",
-    "coverage": "cat ./coverage/lcov.info | coveralls"
+    "coverage": "cat ./coverage/lcov.info | coveralls",
+    "semantic-release": "semantic-release --branch develop",
+    "cz": "git-cz"
   },
   "jest": {
     "testURL": "http://localhost/",
@@ -18,6 +21,13 @@
       "/node_modules/",
       "/test/",
       "/__test__/"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "json",
+      "clover",
+      "cobertura"
     ],
     "moduleFileExtensions": [
       "ts",
@@ -31,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Parsifal-SAS/BatEnd-Helpers-InputPath-Parser.git"
+    "url": "https://github.com/Parsifal-SAS/BatEnd-Helpers-InputPath-Parser.git"
   },
   "keywords": [
     "nodejs",
@@ -54,13 +64,20 @@
   "devDependencies": {
     "@types/xregexp": "^3.0.29",
     "coveralls": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.2.0",
     "jest": "^23.4.2",
+    "semantic-release": "^15.10.6",
     "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1"
   },
   "files": [
     "lib/*"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
