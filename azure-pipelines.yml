@@ -30,10 +30,14 @@ steps:
   displayName: 'Test'
 
 - script: |
+    echo $Build.BuildNumber
+    echo $Build.BuildUri
+    echo $Build.SourceBranch
+    echo $COVERALLS_REPO_TOKEN
     CI_NAME='azure_pipelines'
-    CI_BUILD_NUMBER=${Build.BuildNumber}
-    CI_BUILD_URL=${Build.BuildUri}
-    CI_BRANCH=${Build.SourceBranch}
+    CI_BUILD_NUMBER=$Build.BuildNumber
+    CI_BUILD_URL=$Build.BuildUri
+    CI_BRANCH=$Build.SourceBranch
     npm run coverage
   env:
     COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
