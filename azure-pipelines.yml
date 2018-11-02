@@ -38,7 +38,7 @@ steps:
 
 - script: |
     GIT_COMMIT_SHA=$(Build.SourceVersion)
-    GIT_BRANCH=$(Build.SourceBranch)
+    GIT_BRANCH=$(Build.SourceBranchName)
     CI_NAME='azure_pipelines'
     CI_BUILD_NUMBER=$(Build.BuildNumber)
     CI_BUILD_URL=$(Build.BuildUri)
