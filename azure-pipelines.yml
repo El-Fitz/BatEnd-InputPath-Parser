@@ -44,21 +44,11 @@ steps:
     CI_BUILD_URL=$(Build.BuildUri)
     CI_BRANCH=$(Build.SourceBranch)
     npm run coverage
-    ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
+    ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
+    ./cc-test-reporter upload-coverage --exit-code $?
   env:
     COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
     CC_TEST_REPORTER_ID: $(CC_TEST_REPORTER_ID)
-  displayName: 'Coveralls'
-  condition: succeeded()
-
-- script: |
-    CI_NAME='azure_pipelines'
-    CI_BUILD_NUMBER=$(Build.BuildNumber)
-    CI_BUILD_URL=$(Build.BuildUri)
-    CI_BRANCH=$(Build.SourceBranch)
-    npm run coverage
-  env:
-    COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
   displayName: 'Coveralls'
   condition: succeeded()
 
