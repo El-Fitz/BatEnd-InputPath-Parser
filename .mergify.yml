@@ -1,0 +1,12 @@
+pull_request_rules:
+  - name: automatic merge on CI success and review
+    conditions:
+      - label!=work_in_progress
+      - status-success=Parsifal-SAS.BatEnd-Helpers-InputPath-Parser
+      - status-success=coverage/coveralls
+      - "status-success=LGTM analysis: JavaScript"
+      - "#approved-reviews-by>=1"
+    actions:
+      merge:
+        method: squash
+        strict: true

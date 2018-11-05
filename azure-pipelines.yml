@@ -1,0 +1,151 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+- group: SemanticReleaseEnvironmentVariables
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    customEndpoint: npmJS
+  displayName: 'Install Dependencies'
+
+- script: |
+    npm run build
+  displayName: 'Build'
+
+- script: |
+    # download test reporter as a static binary
+    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    chmod +x ./cc-test-reporter
+  displayName: 'Setup CodeClimate'
+
+- script: |
+    ./cc-test-reporter before-build
+    npm run ci-test
+  displayName: 'Test'
+
+- script: |
+    GIT_COMMIT_SHA=$(Build.SourceVersion)
+    GIT_BRANCH=$(Build.SourceBranchName)
+    ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
+    ./cc-test-reporter upload-coverage
+  env:
+    CC_TEST_REPORTER_ID: $(CC_TEST_REPORTER_ID)
+  displayName: 'CodeClimate Coverage upload'
+  condition: succeeded()
+
+- script: |
+    npm run lint
+  displayName: 'Lint'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results junit.xml'
+  inputs:
+    testResultsFiles: junit.xml
+
+- script: |
+    mkdir $(System.DefaultWorkingDirectory)/coverage/azure-report
+  displayName: 'Create directory for azure coverage report'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/coverage/lcov-report'
+
+- script: |
+    mkdir $(Build.ArtifactStagingDirectory)/npm-artifacts
+  displayName: 'Create directory for npm module artifacts'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- script: |
+    mkdir $(Build.ArtifactStagingDirectory)/github-artifacts
+  displayName: 'Create directory for github artifacts'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/npm-artifacts'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/'
+    Contents: |
+     lib/**/*
+     package.json
+     AUTHORS
+     README.md
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/npm-artifacts'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/github-artifacts'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/'
+    Contents: |
+     lib/**/*
+     src/**/*
+     __tests__/**/*
+     tsconfig.json
+     tsling.json
+     .gitignore
+     .npmignore
+     package.json
+     AUTHORS
+     README.md
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/github-artifacts'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish NPM module Artifact: InputPath-Parser'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/npm-artifacts'
+    ArtifactName: InputPath-Parser-node
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Github Artifact: InputPath-Parser'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/github-artifacts'
+    ArtifactName: InputPath-Parser-github
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+- script: |
+    npm run semantic-release
+  displayName: Deploy via Semantic-Release
+  env:
+    GH_TOKEN: $(GH_TOKEN)
+    NPM_TOKEN: $(NPM_TOKEN)
+
+- script: |
+    echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+  env:
+    NPM_TOKEN: $(NPM_TOKEN)
+  displayName: Authenticate NPM for release tag update on master
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- script: |
+    PACKAGE_NAME="$(node -p "require('./package.json').name")"
+    PACKAGE_VERSION="$(git describe --tags $(git rev-list --tags --max-count=1))"
+    PACKAGE_VERSION=${PACKAGE_VERSION#"v"}
+    npm dist-tag add ${PACKAGE_NAME}@${PACKAGE_VERSION} latest
+  env:
+    NPM_TOKEN: $(NPM_TOKEN)
+  displayName: Promote latest version to @latest on npmjs
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+# - task: Npm@1
+#   inputs:
+#     command: 'publish'
+#     customEndpoint: npmJS
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
