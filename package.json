@@ -62,7 +62,7 @@
     "xregexp": "^4.2.0"
   },
   "devDependencies": {
-    "@types/xregexp": "^3.0.29",
+    "@types/xregexp": "^4.3.0",
     "cz-conventional-changelog": "^2.1.0",
     "jest": "^23.4.2",
     "jest-junit": "^5.2.0",
